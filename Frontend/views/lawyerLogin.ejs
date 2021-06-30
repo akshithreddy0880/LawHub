@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/header') %>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../CSS/login.css">
+</head>
+
+<body>
+    <div class="register">
+        <div class="row">
+            <div class="col-md-3 register-left">
+                <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+                <h3>Welcome</h3>
+                <p>You are 30 seconds away from earning your own money!</p>
+                <a href="/"><input type="submit" name="" value="Homepage"></a><br/>
+            </div>
+            <div class="col-md-9 register-right">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clientLogin" aria-selected="true">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/lawyerLogin" aria-selected="true">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register" aria-selected="false">Register</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        <form action="/lawyers/login" method="POST">
+                            <h3 class="register-heading">Sign in as Lawyer</h3>
+                            <div class="row register-form">
+                                <div class="col-md-9 m-auto">
+                                    <%- include('./partials/messages') %>
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" placeholder="Email*" name="email">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password" class="form-control" placeholder="Password*">
+                                    </div>
+                                    <div class="flex small">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="checkbox" name="chekcbox">
+                                            <label class="form-check-label" for="checkbox">Remember me</label>
+                                        </div>
+                                        <a href="#"><p>Forgot password?</p></a>
+                                    </div>
+                                    <input type="submit" class="btnRegister"  value="Login"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>				                            
+</body>
+
+</html>

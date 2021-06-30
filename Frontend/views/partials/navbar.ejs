@@ -1,0 +1,28 @@
+<header id="header" class="fixed-top ">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-xl-9 d-flex align-items-center justify-content-lg-between">
+        <h1 class="logo me-auto me-lg-0"><a href="/">Law Hub</a></h1>
+        <nav id="navbar" class="navbar order-last order-lg-0">
+          <ul>
+            <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+            <% if(typeof user!=='undefined' && user.role!=='lawyer') { %>
+            <li><a class="nav-link scrollto" href="#">Lawyers</a></li>
+            <% } %>
+            <% if(typeof user!=='undefined' && user.role!=='client') { %>
+            <li><a class="nav-link scrollto" href="#">Clients</a></li>
+            <% } %>
+            <li><a class="nav-link scrollto" href="#about">About</a></li>
+            <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav>
+        <% if(typeof user==='undefined') { %>
+        <a href="/clientLogin" class="get-started-btn scrollto">Get Started</a>
+        <% } else { %>
+        <a href="/logout" class="get-started-btn scrollto">Logout</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</header>
