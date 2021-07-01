@@ -45,7 +45,7 @@ router.post('/lawyer/appointment/:id', (req, res, next) => {
         date: date, 
         timeslot: time,
     }
-    model.findOneAndUpdate(query, {$addToSet: {appointments: appointment}})
+    lawyerModel.findOneAndUpdate(query, {$addToSet: {appointments: appointment}})
         .then(() => console.log('Successfully booked'))
         .catch(err => {
             console.error(err);
