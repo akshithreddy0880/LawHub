@@ -32,15 +32,46 @@ window.onload = () => {
                 div6.append(s3, document.createTextNode(`${lawyer.experience} in years`));
                 let div7 = document.createElement('div');
                 div7.setAttribute('class','col-12 text-center mt-3');
-                let div8 = document.createElement('div');
-                div8.setAttribute('class','btn btn-success btn-sm');
-                div8.append(document.createTextNode('Book appointment'));
-                div7.append(div8);
+                let btn = document.createElement('button');
+                btn.setAttribute('class','btn btn-success btn-sm');
+                btn.setAttribute('data-toggle','modal');
+                btn.setAttribute('data-target','#staticBackdrop');
+                btn.setAttribute('id',`${lawyer.lawyerId}`);
+                btn.append(document.createTextNode('Book appointment'));
+                btn.onclick = () => {
+                    document.getElementById('lid').innerHTML = lawyer.lawyerId;
+                    document.getElementById('name').innerHTML = lawyer.username;
+                    document.getElementById('email').innerHTML = lawyer.email;
+                    document.getElementById('type').innerHTML = lawyer.type;
+                    document.getElementById('experience').innerHTML = `${lawyer.experience} years`;
+                    document.getElementById('fee').innerHTML = lawyer.fee;
+                    document.getElementById('number').innerHTML = lawyer.mobilenumber;
+                }
+                div7.append(btn);
                 div2.append(div3,div4,div5,div6,div7);
                 div1.append(div2);
                 showlawyers.append(div1);
             }
         })
         .catch(err => console.error(err));
+
+        let btnbook = document.getElementById('btnbook');
+        btnbook.onclick = () => {
+            let id = document.getElementById('lid').innerText;
+            let date = document.getElementById('date').value;
+            let time = document.getElementById('time').value;
+            let appoinment = {date,time};
+            location.reload();
+            fetch(`api/lawyer/appointment/${id}`, {
+                method: 'POST',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                body: JSON.stringify(appoinment),
+            })
+            .then(res => {return res.json()})
+            .then(data => console.log(data))
+            .catch(err => console.error.error(err));
+        }
     }
 }
