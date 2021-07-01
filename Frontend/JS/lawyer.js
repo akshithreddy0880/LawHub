@@ -56,22 +56,36 @@ window.onload = () => {
         .catch(err => console.error(err));
 
         let btnbook = document.getElementById('btnbook');
-        btnbook.onclick = () => {
-            let id = document.getElementById('lid').innerText;
-            let date = document.getElementById('date').value;
-            let time = document.getElementById('time').value;
-            let appoinment = {date,time};
-            location.reload();
-            fetch(`api/lawyer/appointment/${id}`, {
-                method: 'POST',
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8"
-                },
-                body: JSON.stringify(appoinment),
-            })
-            .then(res => {return res.json()})
-            .then(data => console.log(data))
-            .catch(err => console.error.error(err));
+        if(btnbook) {
+            btnbook.onclick = () => {
+                let id = document.getElementById('lid').innerText;
+                let date = document.getElementById('date').value;
+                let time = document.getElementById('time').value;
+                if(date === '' && time === 'Select time') {
+                    alert('Please select date and date');
+                    return;
+                }
+                else if(date === '') {
+                    alert('Please select a date');
+                    return;
+                }
+                else if(time === 'Select time') {
+                    alert('Please select a time');
+                    return;
+                }
+                let appoinment = {date,time};
+                location.reload();
+                fetch(`api/lawyer/appointment/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    },
+                    body: JSON.stringify(appoinment),
+                })
+                .then(res => {return res.json()})
+                .then(data => console.log(data))
+                .catch(err => console.error.error(err));
+            }
         }
     }
 }
