@@ -15,7 +15,7 @@ router.get('/lawyerLogin', isNotAuthenticated, (req, res) => {
     res.render('lawyerLogin', {title: 'Lawyer Login', user: req.session.client || req.session.lawyer});
 });
 
-router.get('/register',isNotAuthenticated, (req, res) => {
+router.get('/register', isNotAuthenticated, (req, res) => {
     res.render('register', {title: 'Client Registration', user: req.session.client || req.session.lawyer});
 });
 

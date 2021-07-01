@@ -653,33 +653,55 @@
   # Services
   --------------------------------------------------------------*/
   
-  /*--------------------------------------------------------------
-  # Cta
-  --------------------------------------------------------------*/
+.services .icon-box {
+  width: 20rem;
+  padding: 2rem 2rem;
+  transition: all ease-in-out 0.3s;
+  background: #fefefe;
+  box-shadow: 0px 5px 90px 0px rgba(110, 123, 131, 0.1);
+  border-radius: 18px;
+  border-bottom: 5px solid #fff;
+}
   
-  /*--------------------------------------------------------------
-  # Features
-  --------------------------------------------------------------*/
-  
-  /*--------------------------------------------------------------
-  # Clients
-  --------------------------------------------------------------*/
-  
-  /*--------------------------------------------------------------
-  # Counts
-  --------------------------------------------------------------*/
+.services .icon-box .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: ease-in-out 0.3s;
+  color: #fff;
+}
 
-  /*--------------------------------------------------------------
-  # Portfolio
-  --------------------------------------------------------------*/
+.services .icon-box .icon .image {
+  width: 5rem; 
+  height: 5rem; 
+  border-radius: 50%;
+}
   
-  /*--------------------------------------------------------------
-  # Portfolio Details
-  --------------------------------------------------------------*/
+.services .icon-box h3 {
+  font-weight: 700;
+  margin-bottom: 15px;
+  font-size: 18px;
+  text-align: center;
+}
+  
+.services .icon-box h3 a {
+  color: #282828;
+  transition: ease-in-out 0.3s;
+}
+  
+.services .icon-box:hover {
+  transform: translateY(-10px);
+  border-color: #009961;
+}
+  
+.services .icon-box:hover h3 a {
+  color: #009961;
+}
 
-  /*--------------------------------------------------------------
-  # Pricing
-  --------------------------------------------------------------*/
+.margin {
+  margin-top: 1rem;
+}
   
   /*--------------------------------------------------------------
   # Faq
@@ -787,11 +809,6 @@
   }
   
   @media (max-width: 992px) {
-    /* .faq {
-      img {
-        padding-top: 30px;
-      } 
-    } */
     .faq .content {
       padding-top: 30px;
     }
