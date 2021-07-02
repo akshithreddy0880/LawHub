@@ -3,6 +3,7 @@ const router = express.Router();
 const uuid = require('uuid');
 const createError = require('http-errors');
 const lawyerModel = require('../Models/lawyer');
+const clientModel = require('../Models/client');
 const {isAdmin} = require('../Middlewares/auth');
 
 router.get('/lawyers', (req, res, next) => {
@@ -51,6 +52,52 @@ router.post('/lawyer/appointment/:id', (req, res, next) => {
             console.error(err);
             next(createError('Something went wrong'));
         });
+});
+
+router.get('/clients', (req, res, next) => {
+    let query = {isDeleted: false};
+    let fields = {
+        _id: 0, 
+        username: 1, 
+        email: 1,
+    }
+    clientModel.find(query, fields)
+        .then(clients => res.json(clients))
+        .catch(err => {
+            console.error(err);
+            next(createError('Something went wrong'));
+        });
+});
+
+router.get('/lawyer/appointments', (req, res, next) => {
+    let query = {
+        email: req.session.lawyer.email,
+        isDeleted: false
+    };
+    let fields = {
+        _id: 0, 
+        appointments: 1
+    }
+    lawyerModel.find(query, fields)
+        .then(appointments => res.json(appointments))
+        .catch(err => {
+            console.error(err);
+            next(createError('Something went wrong'));
+        });
+});
+
+router.get('/acceptclient/:id', (req, res) => {
+    let query = {lawyerId: req.user.lawyerId};
+    lawyerModel.updateOne(query, {$set: {'appointments.$[elem].accepted': true}}, {arrayFilters: [{'elem.bookingId': {$eq: req.params.id}}]})
+        .then(user => console.log(user))
+        .catch(err => console.error(err));
+});
+
+router.get('/rejectclient/:id', (req, res) => {
+    let query = {lawyerId: req.user.lawyerId};
+    lawyerModel.updateOne(query, {$pull: {appointments: {bookingId: req.params.id}}})
+        .then(user => console.log(user))
+        .catch(err => console.error(err));
 });
 
 module.exports = router;

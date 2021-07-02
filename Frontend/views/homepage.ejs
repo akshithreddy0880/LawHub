@@ -32,26 +32,37 @@
     </div>
   </section>
   <main id="main">
-    <% if(typeof user!=='undefined' && user.role==='client') { %>
-    <section id="services" class="services">
-      <div class="container">
-        <div class="section-title"><h2>Lawyers</h2></div>
-        <div class="row" id="showlawyers">
-          <!-- <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="icon-box">
-              <div class="icon"><img src="../Images/defaultuser.png" class="image" alt="lawyer"></div>
-              <div class="mt-3"><strong>Name: </strong> Uppalanchi Venkatesh</div>
-              <div class="mt-1"><strong>Type: </strong> Family Lawyer</div>
-              <div class="mt-1"><strong>Experience: </strong> 5 years</div>
-              <div class="col-12 text-center mt-3">
-                <button class="btn btn-success btn-sm">Book appoinment</button>
+    <% if(typeof user!=='undefined' && user.role!=='lawyer') { %>
+      <section id="services" class="services">
+        <div class="container">
+          <div class="section-title"><h2>Lawyers</h2></div>
+          <div class="row" id="showlawyers">
+            <!-- <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+              <div class="icon-box">
+                <div class="icon"><img src="../Images/defaultuser.png" class="image" alt="lawyer"></div>
+                <div class="mt-3"><strong>Name: </strong> Uppalanchi Venkatesh</div>
+                <div class="mt-1"><strong>Type: </strong> Family Lawyer</div>
+                <div class="mt-1"><strong>Experience: </strong> 5 years</div>
+                <div class="col-12 text-center mt-3">
+                  <button class="btn btn-success btn-sm">Book appoinment</button>
+                </div>
               </div>
-            </div>
-          </div> -->
+            </div> -->
+          </div>
         </div>
-      </div>
-    </section>
-    <%- include('./partials/modal') %>
+      </section>
+      <%- include('./partials/lawyerModal') %>
+    <% } %>
+
+    <% if(typeof user!=='undefined' && user.role!=='client') { %>
+      <section id="services" class="services">
+        <div class="container">
+          <div class="section-title"><h2>Clients</h2></div>
+          <div class="row" id="showclients"></div>
+        </div>
+      </section>
+      <%- include('./partials/clientModal') %>
+      <%- include('./partials/requestModal') %>
     <% } %>
 
     <section id="about" class="about">
@@ -205,6 +216,7 @@
   <script src="../vendor/swiper/swiper-bundle.min.js"></script>
   <script src="../JS/main.js"></script>
   <script src="../JS/lawyer.js"></script>
+  <script src="../JS/client.js"></script>
 </body>
 
 </html>

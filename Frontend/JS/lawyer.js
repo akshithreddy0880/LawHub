@@ -1,7 +1,7 @@
 window.onload = () => {
     let showlawyers = document.getElementById('showlawyers');
     if(showlawyers) {
-    fetch(`/api/lawyers`)
+    fetch('/api/lawyers')
         .then(res => {return res.json()})
         .then(lawyers => {
             for(let lawyer of lawyers) {
