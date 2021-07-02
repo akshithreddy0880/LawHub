@@ -86,15 +86,15 @@ router.get('/lawyer/appointments', (req, res, next) => {
         });
 });
 
-router.get('/acceptclient/:id', (req, res) => {
-    let query = {lawyerId: req.user.lawyerId};
+router.patch('/acceptclient/:id', (req, res) => {
+    let query = {lawyerId: req.session.lawyer.lawyerId};
     lawyerModel.updateOne(query, {$set: {'appointments.$[elem].accepted': true}}, {arrayFilters: [{'elem.bookingId': {$eq: req.params.id}}]})
         .then(user => console.log(user))
         .catch(err => console.error(err));
 });
 
-router.get('/rejectclient/:id', (req, res) => {
-    let query = {lawyerId: req.user.lawyerId};
+router.patch('/rejectclient/:id', (req, res) => {
+    let query = {lawyerId: req.session.lawyer.lawyerId};
     lawyerModel.updateOne(query, {$pull: {appointments: {bookingId: req.params.id}}})
         .then(user => console.log(user))
         .catch(err => console.error(err));

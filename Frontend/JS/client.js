@@ -90,12 +90,12 @@ window.onload = () => {
                     reject.setAttribute('id',appointments[i].bookingId);
                     accept.onclick = () => {
                         let id = accept.getAttribute('id');
-                        fetch(`/acceptclient/${id}`) .catch(err => console.error(err));
+                        fetch(`/api/acceptclient/${id}`, {method: 'PATCH'}) .catch(err => console.error(err));
                         location.reload();
                     }
                     reject.onclick = () => {
                         let id = reject.getAttribute('id');
-                        fetch(`/rejectclient/${id}`) .catch(err => console.error(err));
+                        fetch(`/api/rejectclient/${id}`, {method: 'PATCH'}) .catch(err => console.error(err));
                         location.reload();
                     }
                     div.classList.add('flex');

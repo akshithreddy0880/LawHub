@@ -16,7 +16,6 @@ router.post('/login', (req, res) => {
                 .then(ok => {
                     if(ok) {
                         req.session.lawyer = lawyer;
-                        console.log(req.session.lawyer);
                         req.flash('success_msg', 'Successfully loggedIn');
                         return res.redirect('/');
                     } else {
