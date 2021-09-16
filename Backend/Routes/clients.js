@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const createError = require('http-errors');
 const clientModel = require('../Models/client');
 const {hashPassword} = require('../Utils/hash');
-const {transporter} = require('../Utils/mail');
+const {sendEmail} = require('../Utils/sendmail');
 
 router.get('/verify/:token', (req, res, next) => {
     let token = req.params.token;
@@ -19,6 +19,15 @@ router.get('/verify/:token', (req, res, next) => {
         user.isVerified = true;
         user.save() 
             .then(client => {
+                let mailOptions = {
+                    from: 'LawHub',
+                    to: req.body.email,
+                    subject: 'Verified your email',
+                    html: `
+                    <p>Your email is verified. Thank you for registering to LawHub</p>
+                    `
+                };
+                sendEmail(mailOptions);
                 req.flash('success_msg', 'Successfully registered. Please login');
                 return res.redirect('/clientLogin');
             })
@@ -41,31 +50,24 @@ router.post('/register', (req, res, next) => {
                 if(client) {
                     req.flash('error_msg','This email already exists');
                     return res.redirect('/register');
-                } 
-                else {
+                } else {
                     req.body.password = hashPassword(req.body.password);
-                    const user = {
+                    let user = {
                         username: req.body.username,
                         email: req.body.email,
                         password: req.body.password
                     };
-                    const token = jwt.sign(user, process.env.JWT_SECRECT, {expiresIn: '15m'});
-                    const mailOptions = {
-                        from: 'Law Hub',
+                    let token = jwt.sign(user, process.env.JWT_SECRECT, {expiresIn: '15m'});
+                    let mailOptions = {
+                        from: 'LawHub',
                         to: req.body.email,
-                        subject: 'Verification email from Law Hub',
+                        subject: 'Verification email from LawHub',
                         html: `
-                        <p>This token is valid upto 15 mins. Quickly verify your email before expiry</p>
+                        <p>This token is valid upto 15 mins. Quickly verify your email before expiry.</p>
                         <p>To verify your email <a href='${process.env.URL}/users/verify/${token}'>click here</a></p>
                         `
                     };
-                    transporter.sendMail(mailOptions, (err, info) => {
-                        if(err) {
-                            console.log(err);
-                            next(createError('Something went wrong'));
-                        }
-                        else console.log(`Email sent: ${info.response}`);
-                    });  
+                    sendEmail(mailOptions);
                     req.flash('info_msg', 'Check your mail and verify with us');
                     return res.redirect('/clientLogin');
                 }
@@ -74,8 +76,7 @@ router.post('/register', (req, res, next) => {
                 console.error(err);
                 next(createError('Something went wrong'));
             });
-    }
-    catch(err) {
+    } catch(err) {
         console.error(err);
         next(createError(err));
     }
