@@ -33,7 +33,7 @@
     </section>
     <main id="main">
         <% if(typeof user!=='undefined' && user.role!=='lawyer') { %>
-        <section id="services" class="services">
+        <section id="lawyers" class="services">
             <div class="container">
             <div class="section-title"><h2>Lawyers</h2></div>
             <div class="row" id="showlawyers">
@@ -55,7 +55,7 @@
         <% } %>
 
         <% if(typeof user!=='undefined' && user.role!=='client') { %>
-        <section id="services" class="services">
+        <section id="clients" class="services">
             <div class="container">
             <div class="section-title"><h2>Clients</h2></div>
             <div class="row" id="showclients"></div>
