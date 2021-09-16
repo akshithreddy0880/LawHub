@@ -7,7 +7,7 @@ module.exports = {
         saveUninitialized: false,
         cookie: {
             'secure': false,
-            'maxAge': 24*7*60*1000
+            'maxAge': parseInt(process.env.SESSION_MAX_AGE)
         },
         store: MongoStore.create({mongoUrl: process.env.CONNECTION_STRING})
     },
@@ -18,5 +18,5 @@ module.exports = {
         allowedHeaders: ['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With', 'Accept'],
         methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
         optionsSuccessStatus: 200
-    }
+    },
 }

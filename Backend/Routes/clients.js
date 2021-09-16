@@ -83,7 +83,7 @@ router.post('/register', (req, res, next) => {
 });
 
 router.post('/login', (req, res, next) => {
-    let {email, password} = req.body;
+    let {email, password, checkbox} = req.body;
     clientModel.findOne({email})
         .then(client => {
             if(!client) {
@@ -93,6 +93,7 @@ router.post('/login', (req, res, next) => {
             bcrypt.compare(password, client.password)
                 .then(ok => {
                     if(ok) {
+                        if(checkbox == 'on') process.env.SESSION_MAX_AGE = 43200000;
                         req.session.client = client;
                         req.flash('success_msg', 'Successfully loggedIn');
                         return res.redirect('/');
