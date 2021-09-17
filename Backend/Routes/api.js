@@ -4,9 +4,10 @@ const uuid = require('uuid');
 const createError = require('http-errors');
 const lawyerModel = require('../Models/lawyer');
 const clientModel = require('../Models/client');
-const {isAdmin} = require('../Middlewares/auth');
+const {isAuthenticated} = require('../Middlewares/auth');
+const {sendEmail} = require('../Utils/sendmail');
 
-router.get('/lawyers', (req, res, next) => {
+router.get('/lawyers', isAuthenticated, (req, res, next) => {
     let query = {isDeleted: false};
     let fields = {
         _id: 0, 
@@ -26,7 +27,7 @@ router.get('/lawyers', (req, res, next) => {
         });
 });
 
-router.get('/lawyers/:id', (req, res, next) => {
+router.get('/lawyers/:id', isAuthenticated, (req, res, next) => {
     let query = {lawyerId: req.params.id};
     lawyerModel.findOne(query)
         .then(lawyer => res.json(lawyer))
@@ -36,7 +37,7 @@ router.get('/lawyers/:id', (req, res, next) => {
         });
 });
 
-router.post('/lawyer/appointment/:id', (req, res, next) => {
+router.post('/lawyer/appointment/:id', isAuthenticated, (req, res, next) => {
     let query = {lawyerId: req.params.id};
     let {date,time} = req.body;
     let appointment = {
@@ -54,7 +55,7 @@ router.post('/lawyer/appointment/:id', (req, res, next) => {
         });
 });
 
-router.get('/clients', (req, res, next) => {
+router.get('/clients', isAuthenticated, (req, res, next) => {
     let query = {isDeleted: false};
     let fields = {
         _id: 0, 
@@ -69,7 +70,7 @@ router.get('/clients', (req, res, next) => {
         });
 });
 
-router.get('/lawyer/appointments', (req, res, next) => {
+router.get('/lawyer/appointments', isAuthenticated, (req, res, next) => {
     let query = {
         email: req.session.lawyer.email,
         isDeleted: false
@@ -86,17 +87,37 @@ router.get('/lawyer/appointments', (req, res, next) => {
         });
 });
 
-router.patch('/acceptclient/:id', (req, res) => {
+router.patch('/acceptclient/:id', isAuthenticated, (req, res) => {
     let query = {lawyerId: req.session.lawyer.lawyerId};
     lawyerModel.updateOne(query, {$set: {'appointments.$[elem].accepted': true}}, {arrayFilters: [{'elem.bookingId': {$eq: req.params.id}}]})
-        .then(user => console.log(user))
+        .then(user => {
+            let mailOptions = {
+                from: 'LawHub',
+                to: req.body.email,
+                subject: 'Verified your email',
+                html: `
+                <p>Your request has been confirmed. Please meet the lawyer at your choosed time and date.</p>
+                `
+            };
+            sendEmail(mailOptions);
+        })
         .catch(err => console.error(err));
 });
 
-router.patch('/rejectclient/:id', (req, res) => {
+router.patch('/rejectclient/:id', isAuthenticated, (req, res) => {
     let query = {lawyerId: req.session.lawyer.lawyerId};
     lawyerModel.updateOne(query, {$pull: {appointments: {bookingId: req.params.id}}})
-        .then(user => console.log(user))
+        .then(user => {
+            let mailOptions = {
+                from: 'LawHub',
+                to: req.body.email,
+                subject: 'Verified your email',
+                html: `
+                <p>Your request has not accepted by the lawyer. Please try to find another lawyer.</p>
+                `
+            };
+            sendEmail(mailOptions);
+        })
         .catch(err => console.error(err));
 });
 
