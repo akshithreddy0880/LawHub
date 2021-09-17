@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const createError = require('http-errors');
-const {isLawyer} = require('../Middlewares/auth');
+const {isAdmin} = require('../Middlewares/auth');
 const {isAuthenticated,isNotAuthenticated} = require('../Middlewares/auth');
 
 router.get('/', (req, res) => {
@@ -20,7 +20,7 @@ router.get('/clientRegister', isNotAuthenticated, (req, res) => {
     res.render('clientRegister', {title: 'Client Registration', user: req.session.client || req.session.lawyer});
 });
 
-router.get('/lawyerRegister', isLawyer, (req, res) => {
+router.get('/lawyerRegister', isAdmin, (req, res) => {
     res.render('lawyerRegister', {title: 'Lawyer Registration', user: req.session.client || req.session.lawyer});
 });
 
