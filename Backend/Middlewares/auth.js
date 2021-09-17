@@ -12,7 +12,8 @@ module.exports = {
     },
 
     isAdmin: (req, res, next) => {
-        if(req.session.client.role === 'admin' || req.session.lawyer.role === 'admin') 
+        let user = req.session.client || req.session.lawyer;
+        if(user.role === 'admin' || user.role === 'admin') 
             return next();
         res.redirect('/');
     },

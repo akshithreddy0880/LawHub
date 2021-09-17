@@ -54,7 +54,7 @@
         <%- include('./partials/lawyerModal') %>
         <% } %>
 
-        <% if(typeof user!=='undefined' && user.role!=='client') { %>
+        <% if(typeof user!=='undefined' && user.role==='lawyer') { %>
         <section id="clients" class="services">
             <div class="container">
             <div class="section-title"><h2>Clients</h2></div>

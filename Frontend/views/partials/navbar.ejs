@@ -9,7 +9,7 @@
                 <% if(typeof user!=='undefined' && user.role!=='lawyer') { %>
                 <li><a class="nav-link scrollto" href="#lawyers">Lawyers</a></li>
                 <% } %>
-                <% if(typeof user!=='undefined' && user.role!=='client') { %>
+                <% if(typeof user!=='undefined' && user.role==='lawyer') { %>
                 <li><a class="nav-link scrollto" href="#clients">Clients</a></li>
                 <li><a class="nav-link scrollto" style="cursor: pointer;" data-toggle="modal" data-target="#staticBackdrop1">Requests</a></li>
                 <% } %>

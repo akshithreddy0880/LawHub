@@ -20,7 +20,7 @@ router.get('/clientRegister', isNotAuthenticated, (req, res) => {
     res.render('clientRegister', {title: 'Client Registration', user: req.session.client || req.session.lawyer});
 });
 
-router.get('/lawyerRegister', isAdmin, (req, res) => {
+router.get('/lawyerRegister', isAuthenticated, isAdmin, (req, res) => {
     res.render('lawyerRegister', {title: 'Lawyer Registration', user: req.session.client || req.session.lawyer});
 });
 
