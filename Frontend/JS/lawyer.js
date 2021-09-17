@@ -61,7 +61,7 @@ fetch('/api/lawyers')
             let date = document.getElementById('date').value;
             let time = document.getElementById('time').value;
             if(date === '' && time === 'Select time') {
-                alert('Please select date and date');
+                alert('Please select date and time');
                 return;
             }
             else if(date === '') {

@@ -28,8 +28,13 @@
                         <a class="nav-link active" href="/lawyerLogin" aria-selected="true">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register" aria-selected="false">Register</a>
+                        <a class="nav-link" href="/clientRegister" aria-selected="false">Register</a>
                     </li>
+                    <% if(typeof user!=='undefined' && user.role==='admin') { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lawyerRegister" aria-selected="false">Register</a>
+                        </li>
+                    <% } %>
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -49,7 +54,7 @@
                                             <input type="checkbox" class="form-check-input" id="checkbox" name="checkbox">
                                             <label class="form-check-label" for="checkbox">Remember me</label>
                                         </div>
-                                        <a href="#"><p>Forgot password?</p></a>
+                                        <a href="/forgot"><p>Forgot password?</p></a>
                                     </div>
                                     <input type="submit" class="btnRegister"  value="Login"/>
                                 </div>
