@@ -87,38 +87,55 @@ router.get('/lawyer/appointments', isAuthenticated, (req, res, next) => {
         });
 });
 
-router.patch('/acceptclient/:id', isAuthenticated, (req, res) => {
+router.patch('/acceptclient/:id', isAuthenticated, (req, res, next) => {
     let query = {lawyerId: req.session.lawyer.lawyerId};
     lawyerModel.updateOne(query, {$set: {'appointments.$[elem].accepted': true}}, {arrayFilters: [{'elem.bookingId': {$eq: req.params.id}}]})
-        .then(user => {
-            let mailOptions = {
-                from: 'LawHub',
-                to: req.body.email,
-                subject: 'Verified your email',
-                html: `
-                <p>Your request has been confirmed. Please meet the lawyer at your choosed time and date.</p>
-                `
-            };
-            sendEmail(mailOptions);
+        .then(resp => {
+            console.log(resp);
+            lawyerModel.findOne({"appointments.bookingId": req.params.id}, {appointments: {$elemMatch: {bookingId: req.params.id}}})
+                .then(user => {
+                    let mailOptions = {
+                        from: 'LawHub',
+                        to: JSON.stringify(user.appointments[0].email),
+                        subject: 'Verified your email',
+                        html: `
+                        <p>Your request has been confirmed. Please meet the lawyer at your choosed time and date.</p>
+                        `
+                    };
+                    sendEmail(mailOptions);
+                })
+                .catch(err => {
+                    console.error(err);
+                    next(createError('Something went wrong'));
+                });
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            console.error(err);
+            next(createError('Something went wrong'));
+        });
 });
 
-router.patch('/rejectclient/:id', isAuthenticated, (req, res) => {
-    let query = {lawyerId: req.session.lawyer.lawyerId};
-    lawyerModel.updateOne(query, {$pull: {appointments: {bookingId: req.params.id}}})
+router.patch('/rejectclient/:id', isAuthenticated, (req, res, next) => {
+    lawyerModel.findOne({"appointments.bookingId": req.params.id}, {appointments: {$elemMatch: {bookingId: req.params.id}}})
         .then(user => {
             let mailOptions = {
                 from: 'LawHub',
-                to: req.body.email,
+                to: JSON.stringify(user.appointments[0].email),
                 subject: 'Verified your email',
                 html: `
                 <p>Your request has not accepted by the lawyer. Please try to find another lawyer.</p>
                 `
             };
             sendEmail(mailOptions);
+            let query = {lawyerId: req.session.lawyer.lawyerId};
+            lawyerModel.updateOne(query, {$pull: {appointments: {bookingId: req.params.id}}})
+                .then(resp => console.log(resp))
+                .catch(err => console.error(err));
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            console.error(err);
+            next(createError('Something went wrong'));
+        }); 
 });
 
 module.exports = router;
