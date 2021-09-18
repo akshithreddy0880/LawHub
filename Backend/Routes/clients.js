@@ -14,7 +14,7 @@ router.get('/verify/:token', isNotAuthenticated, (req, res, next) => {
         if(err) {
             console.error(err);
             req.flash('error_msg', 'Your token has expired');
-            return res.redirect('/register');
+            return res.redirect('/clientRegister');
         }
         let user = new clientModel(client);
         user.isVerified = true;
