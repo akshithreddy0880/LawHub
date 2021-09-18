@@ -6,8 +6,9 @@ const createError = require('http-errors');
 const clientModel = require('../Models/client');
 const {hashPassword} = require('../Utils/hash');
 const {sendEmail} = require('../Utils/sendmail');
+const {isNotAuthenticated} = require('../Middlewares/auth');
 
-router.get('/verify/:token', (req, res, next) => {
+router.get('/verify/:token', isNotAuthenticated, (req, res, next) => {
     let token = req.params.token;
     jwt.verify(token, process.env.JWT_SECRECT, (err, client) => {
         if(err) {
@@ -38,12 +39,12 @@ router.get('/verify/:token', (req, res, next) => {
     });
 });
 
-router.post('/register', (req, res, next) => {
+router.post('/register', isNotAuthenticated, (req, res, next) => {
     try {
         let {email, password, cpassword} = req.body;
         if(password!==cpassword) {
             req.flash('error_msg','Passwords are not matching');
-            return res.redirect('/register');
+            return res.redirect('/clientRegister');
         }
         clientModel.findOne({email})
             .then(client => {
@@ -82,7 +83,7 @@ router.post('/register', (req, res, next) => {
     }
 });
 
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotAuthenticated, (req, res, next) => {
     let {email, password, checkbox} = req.body;
     clientModel.findOne({email})
         .then(client => {
