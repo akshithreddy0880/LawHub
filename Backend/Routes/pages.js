@@ -32,7 +32,7 @@ router.get('/forgot', isNotAuthenticated, (req, res) => {
     res.render('forgot', {title: 'Forgot Password', user: req.session.client || req.session.lawyer});
 });
 
-router.get('/resetpassword', (req, res) => {
+router.get('/resetpassword', isNotAuthenticated, (req, res) => {
     res.render('resetpassword', {title: 'Reset Password', user: req.session.client || req.session.lawyer});
 });
 
@@ -75,7 +75,7 @@ router.post('/forgot', (req, res) => {
                 req.flash('info_msg', 'Reset password link has sent to your main');
                 return res.redirect('/clientLogin');
             }
-        })
+        });
 });
 
 router.post('/resetpassword', (req, res, next) => {
