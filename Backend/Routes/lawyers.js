@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const uuid = require('uuid');
 const createError = require('http-errors');
 const lawyerModel = require('../Models/lawyer');
 const {hashPassword} = require('../Utils/hash');
 const {isAdmin} = require('../Middlewares/auth');
+const {sendEmail} = require('../Utils/sendmail');
 const {isAuthenticated,isNotAuthenticated} = require('../Middlewares/auth');
 
 router.post('/register', isAuthenticated, isAdmin, (req, res, next) => {
@@ -17,14 +19,17 @@ router.post('/register', isAuthenticated, isAdmin, (req, res, next) => {
                     return res.redirect('/lawyerRegister');
                 } else {
                     let user = {
+                        lawyerId: uuid.v1(),
                         username: req.body.username,
                         email: req.body.email,
                         password: hashPassword('lawyer'),
                         type: req.body.type,
                         fee: req.body.fee,
+                        experience: req.body.experience,
                         mobilenumber: req.body.mobilenumber
                     };
-                    user.save()
+                    let lawyer = new lawyerModel(user);
+                    lawyer.save()
                         .then(lawyer => {
                             let mailOptions = {
                                 from: 'LawHub',
