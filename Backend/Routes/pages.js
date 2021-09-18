@@ -5,6 +5,7 @@ const createError = require('http-errors');
 const lawyerModel = require('../Models/lawyer');
 const {isAdmin} = require('../Middlewares/auth');
 const {hashPassword} = require('../Utils/hash');
+const {sendEmail} = require('../Utils/sendmail');
 const {isAuthenticated,isNotAuthenticated} = require('../Middlewares/auth');
 
 router.get('/', (req, res) => {
@@ -43,7 +44,7 @@ router.get('/resetpassword/:token', (req, res) => {
             req.flash('error_msg', 'Your token has expired');
             return res.redirect('/lawyerLogin');
         }
-        res.redirect('/resetpassword');
+        return res.redirect('/resetpassword');
     });
 });
 
@@ -77,7 +78,7 @@ router.post('/forgot', (req, res) => {
         })
 });
 
-router.post('resetpassword', (req, res, next) => {
+router.post('/resetpassword', (req, res, next) => {
     let {email, password, cpassword} = req.body;
     if(password!==cpassword) {
         req.flash('error_msg','Passwords are not matching');
